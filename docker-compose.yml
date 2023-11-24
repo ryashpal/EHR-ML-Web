@@ -1,7 +1,8 @@
 version: "3.7"
 services:
   app:
-    build: .
+    build: ./web
     image: ehr-ml-web
     ports:
       - "8081:5000"
+    volumes: ['./web:/web']
