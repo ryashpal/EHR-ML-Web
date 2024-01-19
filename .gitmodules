@@ -1,0 +1,3 @@
+[submodule "web/EHR-ML"]
+	path = web/EHR-ML
+	url = https://github.com/ryashpal/EHR-ML.git

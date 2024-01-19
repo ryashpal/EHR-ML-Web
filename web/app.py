@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 
 from UploadCsvUseCase import uploadCsv
+from BuildModelUseCase import getModelConfigList, buildModel
 
 
 @app.route('/')
@@ -53,22 +54,43 @@ def sample_size_analysis():
     return render_template('sample_size_analysis.html', the_title="EHR-ML: Sample Size Analysis")
 
 
-@app.route('/build_model', methods = ['GET', 'POST'])
-def build_model():
+@app.route('/standardisation_analysis')
+def standardisation_analysis():
+    return render_template('standardisation_analysis.html', the_title="EHR-ML: Standardisation Analysis")
+
+
+@app.route('/build', methods = ['GET', 'POST'])
+def build():
     if request.method == 'POST':
-        return redirect("/build_model/" + request.form.get('token_input'))
+        return redirect("/build/" + request.form.get('token'))
     elif request.method == 'GET':
-        return render_template('build_model.html', the_title="EHR-ML: Build Model")
+        return render_template('build.html', the_title="EHR-ML: Build")
 
 
-@app.route('/build_model/<token>')
-def build_model_main(token):
-    return render_template('build_model_main.html', the_title="EHR-ML: Build Model", token=token)
+@app.route('/build/<token>', methods = ['GET', 'POST'])
+def build_form(token):
+    if request.method == 'POST':
+        buildModel(
+            uid=token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            )
+    modelConfigList = getModelConfigList(token)
+    return render_template('build_form.html', the_title="EHR-ML: Build", token=token, builtModelsList=modelConfigList)
 
 
-@app.route('/predict_outcome')
-def predict_outcome():
-    return render_template('predict_outcome.html', the_title="EHR-ML: Predict Outcome")
+@app.route('/evaluate')
+def evaluate():
+    return render_template('evaluate.html', the_title="EHR-ML: Evaluate")
+
+
+@app.route('/predict')
+def predict():
+    return render_template('predict.html', the_title="EHR-ML: Predict")
 
 
 if __name__ == "__main__":
