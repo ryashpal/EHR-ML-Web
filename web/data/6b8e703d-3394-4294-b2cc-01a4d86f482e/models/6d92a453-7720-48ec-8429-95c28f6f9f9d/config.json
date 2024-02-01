@@ -1,1 +1,0 @@
-{"uid": "6b8e703d-3394-4294-b2cc-01a4d86f482e", "window_before": "0", "window_after": "3", "id_columns": "patient_id, visit_occurrence_id", "target_column": "death_adm", "measurement_date_column": "measurement_date", "anchor_date_column": "visit_start_date_adm", "date_created": "2024-01-19 02:31:42"}

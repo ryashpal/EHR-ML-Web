@@ -13,6 +13,17 @@ app = Flask(__name__)
 
 from UploadCsvUseCase import uploadCsv
 from BuildModelUseCase import getModelConfigList, buildModel
+from EvaluateModelUseCase import getEvaluationsConfigList, evaluateModel
+from PredictionUseCase import getPredictionsList
+from PredictionUseCase import predict as predictOutcomes
+from StandardisationAnalysisUseCase import analyse as standardisationAnalysis
+from StandardisationAnalysisUseCase import getAnalysisConfigList as getStandardisationAnalysisConfigList
+from SampleSizeAnalysisUseCase import analyse as sampleSizeAnalysis
+from SampleSizeAnalysisUseCase import getAnalysisConfigList as getSampleSizeAnalysisConfigList
+from ClassRatioAnalysisUseCase import analyse as classRatioAnalysis
+from ClassRatioAnalysisUseCase import getAnalysisConfigList as getClassRatioAnalysisConfigList
+from DataWindowAnalysisUseCase import analyse as dataWindowAnalysis
+from DataWindowAnalysisUseCase import getAnalysisConfigList as getDataWindowAnalysisConfigList
 
 
 @app.route('/')
@@ -39,26 +50,6 @@ def upload_file():
        return redirect("/start")
 
 
-@app.route('/data_window_analysis')
-def data_window_analysis():
-    return render_template('data_window_analysis.html', the_title="EHR-ML: Data Window Analysis")
-
-
-@app.route('/class_ratio_analysis')
-def class_ratio_analysis():
-    return render_template('class_ratio_analysis.html', the_title="EHR-ML: Class Ratio Analysis")
-
-
-@app.route('/sample_size_analysis')
-def sample_size_analysis():
-    return render_template('sample_size_analysis.html', the_title="EHR-ML: Sample Size Analysis")
-
-
-@app.route('/standardisation_analysis')
-def standardisation_analysis():
-    return render_template('standardisation_analysis.html', the_title="EHR-ML: Standardisation Analysis")
-
-
 @app.route('/build', methods = ['GET', 'POST'])
 def build():
     if request.method == 'POST':
@@ -83,14 +74,183 @@ def build_form(token):
     return render_template('build_form.html', the_title="EHR-ML: Build", token=token, builtModelsList=modelConfigList)
 
 
-@app.route('/evaluate')
+@app.route('/evaluate', methods = ['GET', 'POST'])
 def evaluate():
-    return render_template('evaluate.html', the_title="EHR-ML: Evaluate")
+    if request.method == 'POST':
+        return redirect("/evaluate/" + request.form.get('token'))
+    elif request.method == 'GET':
+        return render_template('evaluate.html', the_title="EHR-ML: Evaluate")
 
 
-@app.route('/predict')
+@app.route('/evaluate/<token>', methods = ['GET', 'POST'])
+def evaluate_form(token):
+    if request.method == 'POST':
+        evaluateModel(
+            uid=token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            )
+    modelConfigList = getEvaluationsConfigList(token)
+    return render_template('evaluate_form.html', the_title="EHR-ML: Evaluate", token=token, evaluateModelsList=modelConfigList)
+
+
+@app.route('/predict', methods = ['GET', 'POST'])
 def predict():
-    return render_template('predict.html', the_title="EHR-ML: Predict")
+    if request.method == 'POST':
+        return redirect("/predict/" + request.form.get('test_data_token') + "/" + request.form.get('train_data_token') + "/" + request.form.get('model_token'))
+    elif request.method == 'GET':
+        return render_template('predict.html', the_title="EHR-ML: Predict")
+
+
+@app.route('/predict/<test_data_token>/<train_data_token>/<model_token>', methods = ['GET', 'POST'])
+def predict_form(test_data_token, train_data_token, model_token):
+    if request.method == 'POST':
+        predictOutcomes(
+            testDataToken=test_data_token,
+            trainDataToken=train_data_token,
+            modelToken=model_token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            )
+    predictionConfigList = getPredictionsList(trainDataToken=train_data_token, modelToken=model_token)
+    return render_template(
+        'predict_form.html',
+        the_title="EHR-ML: Predict",
+        test_data_token=test_data_token,
+        train_data_token=train_data_token,
+        model_token=model_token,
+        predictionConfigList=predictionConfigList
+        )
+
+
+@app.route('/standardisation_analysis', methods = ['GET', 'POST'])
+def standardisation_analysis():
+    if request.method == 'POST':
+        return redirect("/standardisation_analysis/" + request.form.get('token'))
+    elif request.method == 'GET':
+        return render_template('standardisation_analysis.html', the_title="EHR-ML: Standardisation Analysis")
+
+
+@app.route('/standardisation_analysis/<token>', methods = ['GET', 'POST'])
+def standardisation_analysis_form(token):
+    if request.method == 'POST':
+        standardisationAnalysis(
+            uid=token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            ensembleModel=(True if (request.form.get('ensemble_model') == 'on') else False),
+            )
+    analysisConfigList = getStandardisationAnalysisConfigList(uid=token)
+    return render_template(
+        'standardisation_analysis_form.html',
+        the_title="EHR-ML: Standardisation Analysis",
+        token=token,
+        analysisConfigList=analysisConfigList
+        )
+
+
+@app.route('/sample_size_analysis', methods = ['GET', 'POST'])
+def sample_size_analysis():
+    if request.method == 'POST':
+        return redirect("/sample_size_analysis/" + request.form.get('token'))
+    elif request.method == 'GET':
+        return render_template('sample_size_analysis.html', the_title="EHR-ML: Sample Size Analysis")
+
+
+@app.route('/sample_size_analysis/<token>', methods = ['GET', 'POST'])
+def sample_size_analysis_form(token):
+    if request.method == 'POST':
+        sampleSizeAnalysis(
+            uid=token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            ensembleModel=(True if (request.form.get('ensemble_model') == 'on') else False),
+            sampleSizeList= [int(sampleSize) for sampleSize in request.form.get('sample_size_list').split(' ')]
+            )
+    analysisConfigList = getSampleSizeAnalysisConfigList(uid=token)
+    return render_template(
+        'sample_size_analysis_form.html',
+        the_title="EHR-ML: Sample Size Analysis",
+        token=token,
+        analysisConfigList=analysisConfigList
+        )
+
+
+@app.route('/class_ratio_analysis', methods = ['GET', 'POST'])
+def class_ratio_analysis():
+    if request.method == 'POST':
+        return redirect("/class_ratio_analysis/" + request.form.get('token'))
+    elif request.method == 'GET':
+        return render_template('class_ratio_analysis.html', the_title="EHR-ML: Class Ratio Analysis")
+
+
+@app.route('/class_ratio_analysis/<token>', methods = ['GET', 'POST'])
+def class_ratio_analysis_form(token):
+    if request.method == 'POST':
+        classRatioAnalysis(
+            uid=token,
+            windowBefore=request.form.get('window_before'),
+            windowAfter=request.form.get('window_after'),
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            ensembleModel=(True if (request.form.get('ensemble_model') == 'on') else False),
+            pcpList= [int(pcp) for pcp in request.form.get('pcp_list').split(' ')]
+            )
+    analysisConfigList = getClassRatioAnalysisConfigList(uid=token)
+    return render_template(
+        'class_ratio_analysis_form.html',
+        the_title="EHR-ML: Class Ratio Analysis",
+        token=token,
+        analysisConfigList=analysisConfigList
+        )
+
+
+@app.route('/data_window_analysis', methods = ['GET', 'POST'])
+def data_window_analysis():
+    if request.method == 'POST':
+        return redirect("/data_window_analysis/" + request.form.get('token'))
+    elif request.method == 'GET':
+        return render_template('data_window_analysis.html', the_title="EHR-ML: Data Window Analysis")
+
+
+@app.route('/data_window_analysis/<token>', methods = ['GET', 'POST'])
+def data_window_analysis_form(token):
+    if request.method == 'POST':
+        dataWindowAnalysis(
+            uid=token,
+            windowBeforeList=[int(windowBefore) for windowBefore in request.form.get('window_before_list').split(' ')],
+            windowAfterList=[int(windowBefore) for windowBefore in request.form.get('window_after_list').split(' ')],
+            idColumns=request.form.get('id_columns'),
+            targetColumn=request.form.get('target_column'),
+            measurementDateColumn=request.form.get('measurement_date_column'),
+            anchorDateColumn=request.form.get('anchor_date_column'),
+            ensembleModel=(True if (request.form.get('ensemble_model') == 'on') else False),
+            )
+    analysisConfigList = getDataWindowAnalysisConfigList(uid=token)
+    return render_template(
+        'data_window_analysis_form.html',
+        the_title="EHR-ML: Data Window Analysis",
+        token=token,
+        analysisConfigList=analysisConfigList
+        )
 
 
 if __name__ == "__main__":

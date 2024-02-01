@@ -73,6 +73,7 @@
                 <table class="table table-bordered">
                         <thead class="thead-dark">
                           <tr>
+                            <th scope="col">Token</th>
                             <th scope="col">Window Before</th>
                             <th scope="col">Window After</th>
                             <th scope="col">ID Columns</th>
@@ -85,6 +86,7 @@
                         <tbody>
                             {% for builtModel in builtModelsList %}
                                 <tr>
+                                    <td >{{builtModel['uid']}}</td>
                                     <td >{{builtModel['window_before']}}</td>
                                     <td>{{builtModel['window_after']}}</td>
                                     <td>{{builtModel['id_columns']}}</td>

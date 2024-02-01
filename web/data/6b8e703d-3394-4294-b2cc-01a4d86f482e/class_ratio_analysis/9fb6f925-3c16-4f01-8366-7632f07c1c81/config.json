@@ -1,0 +1,1 @@
+{"uid": "9fb6f925-3c16-4f01-8366-7632f07c1c81", "window_before": "1", "window_after": "3", "id_columns": "person_id, visit_occurrence_id", "target_column": "death_adm", "measurement_date_column": "measurement_date", "anchor_date_column": "visit_start_date_adm", "ensemble_model": false, "pcp_list": [20, 30], "date_created": "2024-01-31 05:43:38"}
