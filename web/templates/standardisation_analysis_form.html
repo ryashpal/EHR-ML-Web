@@ -5,18 +5,23 @@
 <div class="bg-white py-12 sm:py-16">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl lg:text-center">
-            <p class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Standardisation Analysis</p>
+            <p
+                class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+                Standardisation Analysis</p>
             <label class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Token: {{token}}</label>
         </div>
         <div class="mx-auto mt-8 sm:mt-10 lg:mt-12">
             <dl class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-1 lg:gap-y-16">
-                <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <div
+                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div class="relative pl-16">
                         <form action="/standardisation_analysis/{{token}}" method="POST">
                             <input type="text" name="token" id="token" hidden="true" value="{{token}}"></input>
                             <div class="grid gap-6 mt-12 mb-6 grid-cols-4 md:grid-cols-8">
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="window_before" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Window Before:</label>
+                                    <label for="window_before"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Window
+                                        Before:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="window_before" id="window_before"
@@ -24,7 +29,9 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="window_after" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Window After:</label>
+                                    <label for="window_after"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Window
+                                        After:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="window_after" id="window_after"
@@ -32,7 +39,9 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="id_columns" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">ID Columns:</label>
+                                    <label for="id_columns"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">ID
+                                        Columns:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="id_columns" id="id_columns"
@@ -40,7 +49,9 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="target_column" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Target Column:</label>
+                                    <label for="target_column"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Target
+                                        Column:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="target_column" id="target_column"
@@ -48,7 +59,9 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="measurement_date_column" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Measurement Date Column:</label>
+                                    <label for="measurement_date_column"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Measurement
+                                        Date Column:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="measurement_date_column" id="measurement_date_column"
@@ -56,7 +69,9 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="anchor_date_column" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Anchor Date Column:</label>
+                                    <label for="anchor_date_column"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Anchor Date
+                                        Column:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="text" name="anchor_date_column" id="anchor_date_column"
@@ -64,12 +79,13 @@
                                         required></input>
                                 </div>
                                 <div class="flex items-center"> <!-- Grid cell -->
-                                    <label for="ensemble_model" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Ensemble Model:</label>
+                                    <label for="ensemble_model"
+                                        class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Ensemble
+                                        Model:</label>
                                 </div>
                                 <div class="flex items-center col-span-3"> <!-- Grid cell -->
                                     <input type="checkbox" name="ensemble_model" id="ensemble_model"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        ></input>
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
                                 </div>
                             </div>
                             <button type="submit"
@@ -77,10 +93,12 @@
                         </form>
                     </div>
                 </div>
-                <p class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">List of standardisation analysis performed</p>
+                <p
+                    class="mb-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+                    List of standardisation analysis performed</p>
                 <table class="table table-bordered">
-                        <thead class="thead-dark">
-                          <tr>
+                    <thead class="thead-dark">
+                        <tr>
                             <th scope="col">Token</th>
                             <th scope="col">Window Before</th>
                             <th scope="col">Window After</th>
@@ -90,24 +108,34 @@
                             <th scope="col">Anchor Date Column</th>
                             <th scope="col">Ensemble Model</th>
                             <th scope="col">Date Created</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            {% for analysisConfig in analysisConfigList %}
-                                <tr>
-                                    <td >{{analysisConfig['uid']}}</td>
-                                    <td >{{analysisConfig['window_before']}}</td>
-                                    <td>{{analysisConfig['window_after']}}</td>
-                                    <td>{{analysisConfig['id_columns']}}</td>
-                                    <td>{{analysisConfig['target_column']}}</td>
-                                    <td>{{analysisConfig['measurement_date_column']}}</td>
-                                    <td>{{analysisConfig['anchor_date_column']}}</td>
-                                    <td>{{analysisConfig['ensemble_model']}}</td>
-                                    <td>{{analysisConfig['date_created']}}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for analysisConfig in analysisConfigList %}
+                        <tr>
+                            <td>{{analysisConfig['uid']}}</td>
+                            <td>{{analysisConfig['window_before']}}</td>
+                            <td>{{analysisConfig['window_after']}}</td>
+                            <td>{{analysisConfig['id_columns']}}</td>
+                            <td>{{analysisConfig['target_column']}}</td>
+                            <td>{{analysisConfig['measurement_date_column']}}</td>
+                            <td>{{analysisConfig['anchor_date_column']}}</td>
+                            <td>{{analysisConfig['ensemble_model']}}</td>
+                            <td>{{analysisConfig['date_created']}}</td>
+                            <td>
+                                <a class="link-dark" href="/download/standardisation_analysis/{{token}}/{{analysisConfig['uid']}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                        class="bi bi-cloud-download-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.5a.5.5 0 0 1 1 0V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0m-.354 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V11h-1v3.293l-2.146-2.147a.5.5 0 0 0-.708.708z" />
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </dl>
         </div>
     </div>

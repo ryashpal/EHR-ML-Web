@@ -1,3 +1,5 @@
+import shutil
+
 from flask import Flask
 from flask import render_template
 from flask import send_from_directory
@@ -74,6 +76,11 @@ def build_form(token):
     return render_template('build_form.html', the_title="EHR-ML: Build", token=token, builtModelsList=modelConfigList)
 
 
+@app.route('/download/build/<data_token>/<model_token>', methods = ['GET'])
+def build_download(data_token, model_token):
+    return send_from_directory('data/' + data_token + '/models/' + model_token, 'model.pkl')
+
+
 @app.route('/evaluate', methods = ['GET', 'POST'])
 def evaluate():
     if request.method == 'POST':
@@ -96,6 +103,11 @@ def evaluate_form(token):
             )
     modelConfigList = getEvaluationsConfigList(token)
     return render_template('evaluate_form.html', the_title="EHR-ML: Evaluate", token=token, evaluateModelsList=modelConfigList)
+
+
+@app.route('/download/evaluate/<token>/<evaluate_token>', methods = ['GET'])
+def evaluate_download(token, evaluate_token):
+    return send_from_directory('data/' + token + '/evaluations/' + evaluate_token, 'cv_scores.json', as_attachment=True)
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
@@ -131,6 +143,11 @@ def predict_form(test_data_token, train_data_token, model_token):
         )
 
 
+@app.route('/download/predict/<train_data_token>/<model_token>/<prediction_token>', methods = ['GET'])
+def predict_download(train_data_token, model_token, prediction_token):
+    return send_from_directory('data/' + train_data_token + '/models/' + model_token + '/predictions/' + prediction_token, 'preds.csv')
+
+
 @app.route('/standardisation_analysis', methods = ['GET', 'POST'])
 def standardisation_analysis():
     if request.method == 'POST':
@@ -159,6 +176,12 @@ def standardisation_analysis_form(token):
         token=token,
         analysisConfigList=analysisConfigList
         )
+
+
+@app.route('/download/standardisation_analysis/<data_token>/<analysis_token>', methods = ['GET'])
+def standardisation_analysis_download(data_token, analysis_token):
+    shutil.make_archive('data/' + data_token + '/standardisation_analysis/' + analysis_token, 'zip', 'data/' + data_token + '/standardisation_analysis/' + analysis_token)
+    return send_from_directory('data/' + data_token + '/standardisation_analysis', analysis_token + '.zip', as_attachment=True)
 
 
 @app.route('/sample_size_analysis', methods = ['GET', 'POST'])
@@ -192,6 +215,12 @@ def sample_size_analysis_form(token):
         )
 
 
+@app.route('/download/sample_size_analysis/<data_token>/<analysis_token>', methods = ['GET'])
+def sample_size_analysis_download(data_token, analysis_token):
+    shutil.make_archive('data/' + data_token + '/sample_size_analysis/' + analysis_token, 'zip', 'data/' + data_token + '/sample_size_analysis/' + analysis_token)
+    return send_from_directory('data/' + data_token + '/sample_size_analysis', analysis_token + '.zip', as_attachment=True)
+
+
 @app.route('/class_ratio_analysis', methods = ['GET', 'POST'])
 def class_ratio_analysis():
     if request.method == 'POST':
@@ -223,6 +252,12 @@ def class_ratio_analysis_form(token):
         )
 
 
+@app.route('/download/class_ratio_analysis/<data_token>/<analysis_token>', methods = ['GET'])
+def class_ratio_analysis_download(data_token, analysis_token):
+    shutil.make_archive('data/' + data_token + '/class_ratio_analysis/' + analysis_token, 'zip', 'data/' + data_token + '/class_ratio_analysis/' + analysis_token)
+    return send_from_directory('data/' + data_token + '/class_ratio_analysis', analysis_token + '.zip', as_attachment=True)
+
+
 @app.route('/data_window_analysis', methods = ['GET', 'POST'])
 def data_window_analysis():
     if request.method == 'POST':
@@ -251,6 +286,12 @@ def data_window_analysis_form(token):
         token=token,
         analysisConfigList=analysisConfigList
         )
+
+
+@app.route('/download/data_window_analysis/<data_token>/<analysis_token>', methods = ['GET'])
+def data_window_analysis_download(data_token, analysis_token):
+    shutil.make_archive('data/' + data_token + '/data_window_analysis/' + analysis_token, 'zip', 'data/' + data_token + '/data_window_analysis/' + analysis_token)
+    return send_from_directory('data/' + data_token + '/data_window_analysis', analysis_token + '.zip', as_attachment=True)
 
 
 if __name__ == "__main__":
