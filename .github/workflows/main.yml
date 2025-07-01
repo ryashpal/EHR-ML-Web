@@ -12,16 +12,6 @@ jobs:
     - uses: actions/checkout@main
       with:
         fetch-depth: 0
-
-    - name: Verify target token presence
-      run: |
-        if [ -z "${{ secrets.TARGET_TOKEN }}" ]; then
-          echo "TARGET_TOKEN is missing"
-          exit 1
-        else
-          echo "TARGET_TOKEN is set"
-        fi
-
     - uses: wangchucheng/git-repo-sync@v0.1.0
       with:
         # Such as https://github.com/wangchucheng/git-repo-sync.git
